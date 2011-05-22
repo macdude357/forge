@@ -157,4 +157,60 @@ public class ProjectPluginTest extends AbstractShellTest
 	    
 	    assertEquals(newDep.toCoordinates(), dep.toCoordinates());
 	}
+
+	/**
+	 * Tests overriding managed dependency with a different version.
+	 * @throws IOException
+	 */
+	@Test
+	public void testAddDependencyOverrideManaged() throws IOException
+	{
+	    queueInputLines("", "n");
+		Project project = initializeJavaProject();
+		getShell().execute("project add-managed-dependency com.ocpsoft:prettyfaces-jsf2:3.2.0");
+	    MavenDependencyFacet facet = project.getFacet(MavenDependencyFacet.class);
+	    
+	    DependencyBuilder dep = DependencyBuilder.create();
+	    dep.setArtifactId("prettyfaces-jsf2");
+	    dep.setGroupId("com.ocpsoft");
+	    dep.setVersion("3.0.1");
+	    dep.setScopeType("compile");
+	    dep.setPackagingType("jar");
+
+	    assertNull(facet.getDependency(dep));
+	    getShell().execute("project add-dependency com.ocpsoft:prettyfaces-jsf2:3.0.1");
+	    
+	    Dependency newDep = facet.getDependency(dep);
+	    dep.setVersion("3.0.1");
+	    
+	    assertEquals(newDep.toCoordinates(), dep.toCoordinates());
+	}
+
+	/**
+	 * Tests overriding managed dependency with a different version.
+	 * @throws IOException
+	 */
+	@Test
+	public void testAddDependencyOverrideManagedRange() throws IOException
+	{
+	    queueInputLines("", "n", "2");
+		Project project = initializeJavaProject();
+		getShell().execute("project add-managed-dependency com.ocpsoft:prettyfaces-jsf2:3.2.0");
+	    MavenDependencyFacet facet = project.getFacet(MavenDependencyFacet.class);
+	    
+	    DependencyBuilder dep = DependencyBuilder.create();
+	    dep.setArtifactId("prettyfaces-jsf2");
+	    dep.setGroupId("com.ocpsoft");
+	    dep.setVersion("3.0.1");
+	    dep.setScopeType("compile");
+	    dep.setPackagingType("jar");
+
+	    assertNull(facet.getDependency(dep));
+	    getShell().execute("project add-dependency com.ocpsoft:prettyfaces-jsf2");
+	    
+	    Dependency newDep = facet.getDependency(dep);
+	    dep.setVersion("3.0.1");
+	    
+	    assertEquals(newDep.toCoordinates(), dep.toCoordinates());
+	}
 }

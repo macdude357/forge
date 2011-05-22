@@ -209,19 +209,7 @@ public class MavenDependencyFacet extends BaseFacet implements DependencyFacet, 
    @Override
    public boolean hasEffectiveManagedDependency(final Dependency manDep)
    {
-      MavenCoreFacet maven = project.getFacet(MavenCoreFacet.class);
-      DependencyManagement depMan = maven.getProjectBuildingResult().getProject().getDependencyManagement();
-      List<Dependency> managedDependencies = (depMan != null ? MavenDependencyAdapter.fromMavenList(depMan
-               .getDependencies()) : new ArrayList<Dependency>());
-
-      for (Dependency managedDependency : managedDependencies)
-      {
-         if (areEquivalent(managedDependency, manDep))
-         {
-            return true;
-         }
-      }
-      return false;
+      return (getEffectiveManagedDependency(manDep) != null);
    }
 
    @Override

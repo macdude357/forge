@@ -148,7 +148,8 @@ public class ProjectPlugin implements Plugin
                || shell.promptBoolean("Dependency already exists [" + gav.getGroupId() + ":" + gav.getArtifactId()
                         + "], continue?", true))
       {
-         if (deps.hasEffectiveManagedDependency(gav))
+         boolean requestProcessed = false;
+    	 if (deps.hasEffectiveManagedDependency(gav))
          {
         	 Dependency existingDep = deps.getEffectiveManagedDependency(gav);
         	 if (shell.promptBoolean("Dependency is managed [" + 
@@ -160,9 +161,10 @@ public class ProjectPlugin implements Plugin
         		 depToAdd.setArtifactId(gav.getArtifactId());
         		 deps.addDependency(depToAdd);
                  out.println("Added dependency [" + depToAdd + "]");
+                 requestProcessed = true;
         	 }
          }
-         else
+         if (!requestProcessed)
          {
     	 DependencyBuilder search = DependencyBuilder.create(gav).setVersion("[0,)");
          List<Dependency> availableVersions = deps.resolveAvailableVersions(search);
