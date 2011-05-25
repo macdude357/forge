@@ -19,29 +19,46 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.forge.shell.completer;
+package org.jboss.forge;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
-import org.jboss.forge.shell.Shell;
-import org.jboss.forge.shell.completer.SimpleTokenCompleter;
+import org.jboss.forge.resources.DirectoryResource;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
+ * 
  */
-public class ShellEnvCompleter extends SimpleTokenCompleter
+public interface ForgeEnvironment
 {
-   @Inject
-   private Shell shell;
 
-   @Override
-   public List<Object> getCompletionTokens()
-   {
-      Map<String, Object> props = shell.getProperties();
-      return new ArrayList<Object>(props.keySet());
-   }
+   /**
+    * Return the directory Forge is using to store and load third-party plugins.
+    */
+   DirectoryResource getPluginDirectory();
+
+   /**
+    * Return true if Forge is currently operating with the assumption that an Internet connection is available.
+    */
+   boolean isOnline();
+
+   /**
+    * Set a configuration property for the current Forge execution.
+    */
+   void setProperty(String name, Object value);
+
+   /**
+    * Get a map of all configuration properties for the current Forge execution.
+    */
+   Map<String, Object> getProperties();
+
+   /**
+    * Get a named property for the current Forge execution
+    */
+   Object getProperty(String name);
+
+   /**
+    * Get a named property for the current Forge execution
+    */
+   void removeProperty(String funcName);
 }

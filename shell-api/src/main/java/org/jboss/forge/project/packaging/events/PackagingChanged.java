@@ -19,13 +19,44 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.forge.environment;
+package org.jboss.forge.project.packaging.events;
+
+import org.jboss.forge.ForgeEvent;
+import org.jboss.forge.project.Project;
+import org.jboss.forge.project.packaging.PackagingType;
 
 /**
+ * This event is fired when the current {@link Project}'s {@link PackagingType} is changed.
+ * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
-public interface ForgeEnvironment
+@ForgeEvent
+public final class PackagingChanged
 {
-   boolean isOnline();
+   private final PackagingType oldPackagingType;
+   private final PackagingType newPackagingType;
+   private final Project project;
+
+   public PackagingChanged(final Project project, final PackagingType old, final PackagingType newType)
+   {
+      this.project = project;
+      this.oldPackagingType = old;
+      this.newPackagingType = newType;
+   }
+
+   public PackagingType getOldPackagingType()
+   {
+      return oldPackagingType;
+   }
+
+   public PackagingType getNewPackagingType()
+   {
+      return newPackagingType;
+   }
+
+   public Project getProject()
+   {
+      return project;
+   }
 }

@@ -19,36 +19,28 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.forge.project.facets;
+package org.jboss.forge.shell.completer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.jboss.forge.ForgeEnvironment;
 
 /**
- * Thrown when a user aborts installation of a given Facet.
- * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
- * 
  */
-public class FacetInstallationAborted extends RuntimeException
+public class EnvironmentPropertiesCompleter extends SimpleTokenCompleter
 {
-   private static final long serialVersionUID = -1271812418795623520L;
+   @Inject
+   private ForgeEnvironment environment;
 
-   public FacetInstallationAborted()
+   @Override
+   public List<Object> getCompletionTokens()
    {
-      super();
+      Map<String, Object> props = environment.getProperties();
+      return new ArrayList<Object>(props.keySet());
    }
-
-   public FacetInstallationAborted(String message, Throwable cause)
-   {
-      super(message, cause);
-   }
-
-   public FacetInstallationAborted(String message)
-   {
-      super(message);
-   }
-
-   public FacetInstallationAborted(Throwable cause)
-   {
-      super(cause);
-   }
-
 }
