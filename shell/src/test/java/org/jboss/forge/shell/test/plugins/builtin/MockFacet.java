@@ -19,43 +19,37 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.forge.shell.util;
+package org.jboss.forge.shell.test.plugins.builtin;
 
-import java.util.Arrays;
-import java.util.List;
+import org.jboss.forge.project.facets.BaseFacet;
+import org.jboss.forge.resources.FileResource;
+import org.jboss.forge.shell.plugins.Alias;
 
 /**
- * Utility methods for enum types.
- * 
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * 
  */
-public class Enums
+@Alias("mockfacet")
+public class MockFacet extends BaseFacet
 {
-   public static Enum<?> valueOf(final Class<?> type, final Object value)
+
+   @Override
+   public boolean install()
    {
-      if (value != null)
-      {
-         List<?> enums = Arrays.asList(type.getEnumConstants());
-         for (Object e : enums)
-         {
-            if (e.toString().equals(value.toString())
-                     || ((Enum<?>) e).name().equals(value.toString()))
-            {
-               return (Enum<?>) e;
-            }
-         }
-      }
-      return null;
+      FileResource<?> child = (FileResource<?>) project.getProjectRoot().getChild("mockFacet.installed");
+      return child.createNewFile();
    }
 
-   public static boolean hasValue(final Class<?> type, final Object value)
+   @Override
+   public boolean isInstalled()
    {
-      return valueOf(type, value) != null;
+      return project.getProjectRoot().getChild("mockFacet.installed").exists();
    }
 
-   public static <T extends Enum<T>> List<T> getValues(final Class<T> type)
+   @Override
+   public boolean uninstall()
    {
-      return Arrays.asList(type.getEnumConstants());
+      return project.getProjectRoot().getChild("mockFacet.installed").delete();
    }
+
 }
